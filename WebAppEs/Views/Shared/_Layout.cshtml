@@ -1,0 +1,130 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Process Development</title>
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" />*@
+    <partial name="Gentelella/_Styles" />
+    @*<style>
+            input[type=checkbox] {
+                -ms-transform: scale(2);
+                -moz-transform: scale(2);
+                -webkit-transform: scale(2);
+                -o-transform: scale(2);
+                transform: scale(2);
+                padding: 10px;
+            }
+        </style>*@
+    <style>
+        body {
+            font-family: "Times New Roman";
+        }
+    </style>
+</head>
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view">
+                    <div class="navbar nav_title" style="border: 1px solid; background-color: #223654;">
+                        <a style="font-size: 14px;" href="@Url.Action("Index", "Home")" class="site_title">
+                            <img class="" style="height:34px; width:47px; margin:0px" src="~/Logo/LogoPNG.png" /> <span style="color: wheat; font-weight: 600;">Process Development</span>
+                        </a>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <!-- menu profile quick info -->
+                    <div class="profile clearfix">
+                        <div class="profile_pic">
+                            <img src="~/build/images/UserAvatar.png" alt="..." class="img-circle profile_img">
+                        </div>
+                        <div style="padding: 39px 10px 10px; width: 65%; float: left; ">
+                            
+                            <span style="color: bisque;">@HttpContextAccessor.HttpContext.Session.GetString("Name")</span>
+                        </div>
+                    </div>
+                    <!-- /menu profile quick info -->
+                    <br />
+                    <!-- sidebar menu -->
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                        @await Component.InvokeAsync("NavigationMenu")
+                    </div>
+
+                    <!-- /sidebar menu -->
+                    <!-- /menu footer buttons -->
+                    <div class="sidebar-footer hidden-small">
+                        <!--<a data-toggle="tooltip" data-placement="top" title="Settings">-->
+                            @*<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>*@
+                        <!--</a>
+                        <a data-toggle="tooltip" data-placement="top" title="FullScreen">-->
+                            @*<span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>*@
+                        <!--</a>
+                        <a data-toggle="tooltip" data-placement="top" title="Lock">-->
+                            @*<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>*@
+                        <!--</a>
+                        <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                        </a>-->
+                    </div>
+                    <!-- /menu footer buttons -->
+                </div>
+            </div>
+
+            <!-- top navigation -->
+            <div class="top_nav">
+                <div class="nav_menu">
+                    <div class="nav toggle">
+                        <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                    </div>
+                    <nav class="nav navbar-nav">
+                        <ul style="margin-right: 70px;" class=" navbar-right">
+                            <partial name="_LoginPartial" />
+
+                            @*<li class="nav-item dropdown open" style="padding-left: 15px;">
+                                    <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                                        <img src="~/build/images/UserAvatar.png" />John Doe
+                                    </a>
+                                    <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="javascript:;"> Profile</a>
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <span class="badge bg-red pull-right">50%</span>
+                                            <span>Settings</span>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:;">Help</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout"> <i class="fa fa-sign-out pull-right"></i> Logout</a>
+                                    </div>
+                                </li>*@
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!-- /top navigation -->
+            <!-- page content -->
+            <div class="right_col" role="main">
+                <div class="">
+                    @RenderBody()
+                </div>
+            </div>
+            <!-- /page content -->
+            <!-- footer content -->
+            <footer style="background-color: #080808; color: wheat; font-size: medium;">
+                <div class="pull-right">
+                    Developed By - Software Department Section (Mobile R&D)
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+            <!-- /footer content -->
+        </div>
+    </div>
+    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>*@
+    <partial name="Gentelella/_Scripts" />
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

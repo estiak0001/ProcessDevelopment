@@ -1,0 +1,97 @@
+﻿@model WebAppEs.ViewModel.Authentication.LoginViewModel
+@{ ViewData["Title"] = "Login";
+                Layout = null; }
+
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--===============================================================================================-->
+    <link href="~/Login/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <!--===============================================================================================-->
+    <link href="~/Login/fonts/font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet" />
+    <!--===============================================================================================-->
+    <link href="~/Login/fonts/iconic/css/material-design-iconic-font.css" rel="stylesheet" />
+    <!--===============================================================================================-->
+    <link href="~/Login/animate/animate.css" rel="stylesheet" />
+    <!--===============================================================================================-->
+    <link href="~/Login/css-hamburgers/hamburgers.css" rel="stylesheet" />
+    <!--===============================================================================================-->
+    <link href="~/Login/animsition/css/animsition.css" rel="stylesheet" />
+    <!--===============================================================================================-->
+    <link href="~/Login/select2/select2.min.css" rel="stylesheet" />
+    <!--===============================================================================================-->
+    <link href="~/Login/daterangepicker/daterangepicker.css" rel="stylesheet" />
+    <!--===============================================================================================-->
+    <link href="~/Login/css/util.css" type="text/css" rel="stylesheet" />
+    <link href="~/Login/css/main.css" type="text/css" rel="stylesheet" />
+    <!--===============================================================================================-->
+    <title>Login</title>
+</head>
+<body>
+    <div class="limiter">
+        <div class="container-login100" style="background-image: url('../Login/images/bg-01.jpg');">
+            <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+                <form class="login100-form validate-form" method="post">
+                    <span class="login100-form-title p-b-49">
+                        Login
+                    </span>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <br />
+                    <div class="wrap-input100 validate-input m-b-23" data-validate="Username is reauired">
+                        <span class="label-input100">Username</span>
+                        <input asp-for="Username" type="text" class="input100" placeholder="Type your username" id="username">
+                        <span class="focus-input100" data-symbol="&#xf206;"></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Password is required">
+                        <span class="label-input100">Password</span>
+                        <input asp-for="Password" type="password" class="input100" placeholder="Type your password" id="password">
+                        <span class="focus-input100" data-symbol="&#xf190;"></span>
+                    </div>
+
+                    <div class="text-right p-t-8 p-b-31">
+                        <a href="#">
+
+                        </a>
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <div class="wrap-login100-form-btn">
+                            <div class="login100-form-bgbtn"></div>
+                            <button type="submit" class="login100-form-btn">
+                                Login
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="txt1 text-center p-t-54 p-b-20">
+                        <span>
+                            Or Contact With Admin for Sign Up
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--===============================================================================================-->
+    <script src="~/Login/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/Login/animsition/js/animsition.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/Login/bootstrap/js/popper.js"></script>
+    <script src="~/Login/bootstrap/js/popper.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/Login/select2/select2.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="vendor/daterangepicker/moment.min.js"></script>
+    <script src="~/Login/daterangepicker/daterangepicker.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/Login/countdowntime/countdowntime.js"></script>
+    <!--===============================================================================================-->
+    <script src="js/main.js"></script>
+</body>
+</html>

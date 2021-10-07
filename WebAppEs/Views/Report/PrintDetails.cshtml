@@ -1,0 +1,139 @@
+﻿@model WebAppEs.ViewModel.Report.ReportViewModel
+@{ ViewData["Title"] = "Report"; }
+<div class="x_panel">
+    <a style="float:right; text-decoration:none" class="btn btn-dark" asp-action="Index"> <i class="fa fa-print pr-2"></i> List Report</a>
+    <div class="x_title">
+        <h2>Faults Details Report</h2>
+        <div class="clearfix"></div>
+    </div>
+    <div class="container">
+        <!-- start form for validation -->
+        <form method="post" id="reportform" asp-action="PrintListDetails">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <input id="txtFromDate" asp-for="Date" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <button style="margin-left:10px" id="btnSubmit" type="submit" class="btn btn-success">Print Details</button>
+                        </div>
+
+                        <div class="col-md-4">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        @*<div style="text-align:end">
+                <button style="margin-left:5px" id="btnPreview" class="btn btn-dark">Preview</button>
+            </div>
+            <div style="margin-top:10px" id="PreviewData" class="tablecontainer">
+
+            </div>*@
+    </div>
+</div>
+
+
+@section scripts{
+    @*<script>
+        $(document).ready(function () {
+            var PreviewData = [];
+            $('#ddlModel, #ddlEmployee').select2({
+            });
+            $("#btnPreview").click(function () {
+                LoadPreview()
+            });
+
+        });
+        function LoadPreview() {
+
+            var data = {
+                FromDate: $('#txtFromDate').val().trim(),
+                ToDate: $('#txtToDate').val().trim(),
+                LineNo: $('#ddlLine').val().trim(),
+                PartsModelID: $('#ddlModel').val().trim(),
+                LotNo: $('#ddlLot').val().trim(),
+                EmployeeID: $('#ddlEmployee').val().trim(),
+                //IsQty = $("#withQty").is(':checked'),
+            }
+            $.ajax({
+                        data: data,
+                        url: '@Url.Action("LoadPreView", "Report")',
+                        type: 'GET',
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (result) {
+                            if (result != null) {
+                                PreviewData = [];
+                                PreviewData = result;
+                                console.log(PreviewData);
+                                GeneratedPreviewTable(PreviewData)
+                            }
+                            else {
+                            }
+
+                        }
+                    });
+        }
+        function GeneratedPreviewTable(PreviewData) {
+            var isChecked = $("#withQty").is(":checked");
+
+            if (PreviewData.length > 0) {
+                var $table = $('<table id="datatable-responsive" class="table table-sm  table-bordered dt-responsive nowrap" cellspacing="0" style="width:100%"/>');
+                $table.append('<thead style = "background-color: #2a3f54; color: white;"><tr><th>Date</th><th>Line</th><th>Model</th><th>Lot</th><th style="background-color: brown;">Total Check</th> <th>Func. Mat.</th> <th>Func. Prod.</th> <th>Func. Soft.</th> <th style="background-color: brown;">Total Func.</th> <th>Aes. Mat.</th> <th>Aes. Prod.</th> <th style="background-color: brown;">Total Aes.</th> <th>Employee ID</th></thead>');
+                var $tbody = $('<tbody/>');
+                $.each(PreviewData, function (i, val) {
+                    var d = new Date(val.date);
+                    var d_formatted = d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear();
+                    var $row = $('<tr/>');
+                    $row.append($('<td/>').html(d_formatted));
+                    $row.append($('<td/>').html(val.line));
+                    $row.append($('<td/>').html(val.modelName));
+                    $row.append($('<td/>').html(val.lotNo));
+                    $row.append($('<td/>').html(val.totalCheckedQty));
+                    if (isChecked) {
+                        $row.append($('<td/>').html(val.funcMaterialFault));
+                        $row.append($('<td/>').html(val.funcProductionFault));
+                        $row.append($('<td/>').html(val.funcSoftwareFault));
+                        $row.append($('<td/>').html(val.totalFunctionalFault));
+                        $row.append($('<td/>').html(val.aesthMaterialFault));
+                        $row.append($('<td/>').html(val.aesthProductionFault));
+                        $row.append($('<td/>').html(val.totalAestheticFault));
+                    } else {
+                        $row.append($('<td/>').html(val.funcMaterialFaultd.toFixed(2) + "%"));
+                        $row.append($('<td/>').html(val.funcProductionFaultd.toFixed(2) + "%"));
+                        $row.append($('<td/>').html(val.funcSoftwareFaultd.toFixed(2) + "%"));
+                        $row.append($('<td/>').html(val.totalFunctionalFaultd.toFixed(2) + "%"));
+                        $row.append($('<td/>').html(val.aesthMaterialFaultd.toFixed(2) + "%"));
+                        $row.append($('<td/>').html(val.aesthProductionFaultd.toFixed(2) + "%"));
+                        $row.append($('<td/>').html(val.totalAestheticFaultd.toFixed(2) + "%"));
+                    }
+
+                    $row.append($('<td/>').html(val.employeeID));
+                    $tbody.append($row);
+                });
+                console.log("current", PreviewData);
+                $table.append($tbody);
+                $('#PreviewData').html($table);
+
+            }
+            else {
+                $('#PreviewData').html('');
+            }
+        }
+    </script>*@
+}
+
+<style>
+    .button2 {
+        transition-duration: 0.4s;
+    }
+
+        .button2:hover {
+            background-color: #4CAF50; /* Green */
+            color: white;
+        }
+</style>

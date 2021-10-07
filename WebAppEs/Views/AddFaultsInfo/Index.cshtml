@@ -1,0 +1,149 @@
+﻿
+@model WebAppEs.ViewModel.FaultsEntry.MobileRNDFaultsEntryViewModel
+@{ ViewData["Title"] = "Faults List"; }
+<div class="clearfix"></div>
+<div style="" class="row">
+    <div class="col-md-12 col-sm-12 ">
+        <a style="float:right" class="btn btn-info" asp-action="CreateFaultsInfo"> <i class="fa fa-plus pr-2"></i> Create New</a>
+        @*<a style="float:right" class="btn btn-outline-dark" asp-action="FaultsDetails"> <i class="fa fa-plus pr-2"></i> Add Faults Details</a>*@
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>List of Faults</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-refresh"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card-box table-responsive">
+
+                            <table id="datatable-responsive" class="table table-sm    dt-responsive nowrap" cellspacing="0" width="100%">
+                                <thead style="background-color: #d7e3ef;">
+                                    <tr>
+                                        @*<th>Employee ID</th>*@
+                                        <th>Date</th>
+                                        <th>Line</th>
+                                        <th>Model</th>
+                                        <th style="font-weight: 900; color: darkviolet; ">Total Checked</th>
+                                        <th>Fun. Material</th>
+                                        <th>Fun. Production</th>
+                                        <th>Fun. Software</th>
+                                        <th style="font-weight: 900; color: darkviolet; ">Fun. Total</th>
+                                        <th>Aes. Material</th>
+                                        <th>Aes. Production</th>
+                                        <th style="font-weight: 900; color: darkviolet; ">Aes. Total</th>
+                                        <th style="text-align:center">Action's</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.MobileRNDFaultsEntryViewModelList)
+                                    {
+                                    var tm = "#myModal" + item.Id;
+                                    var mid = "myModal" + item.Id;
+                                    <tr>
+                                        @*<td>
+                                                @Html.DisplayFor(modelItem => item.EmployeeID)
+                                            </td>*@
+                                        @if (item.StatusIsToday == false)
+                            {
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Date)
+                                        </td>
+ }
+                            else
+                            {
+                                        <td style="font-weight:bold; color: brown">
+                                            @Html.DisplayFor(modelItem => item.Date)
+                                        </td>
+}
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Line)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ModelNameWithLot)
+                                        </td>
+                                        <td style="background-color: #adda9a; text-align: center">
+                                            @Html.DisplayFor(modelItem => item.TotalCheckedQty)
+                                        </td>
+                                        <td style="text-align:center">
+                                            @Html.DisplayFor(modelItem => item.FuncMaterialFault)
+                                        </td>
+                                        <td style="text-align:center">
+                                            @Html.DisplayFor(modelItem => item.FuncProductionFault)
+                                        </td>
+                                        <td style="text-align:center">
+                                            @Html.DisplayFor(modelItem => item.FuncSoftwareFault)
+                                        </td>
+                                        <td style="background-color: #b8b7ea; text-align: center">
+                                            @Html.DisplayFor(modelItem => item.TotalFunctionalFault)
+                                        </td>
+                                        <td style="text-align:center">
+                                            @Html.DisplayFor(modelItem => item.AesthMaterialFault)
+                                        </td>
+                                        <td style="text-align:center">
+                                            @Html.DisplayFor(modelItem => item.AesthProductionFault)
+                                        </td>
+                                        <td style="background-color: #f1d1c5; text-align: center">
+                                            @Html.DisplayFor(modelItem => item.TotalAestheticFault)
+                                        </td>
+                                        <td style="text-align:center">
+                                            <div class="btn-group">
+                                                <a style="color: #3247dd; font-size: large; font-weight: bolder; padding: 0px; cursor:pointer" class="btn btn-sm " data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fa fa-ellipsis-v"></i>
+                                                </a>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item" style=" color: blue; border-bottom: 1px solid;" asp-action="CreateFaultsInfo" asp-controller="AddFaultsInfo" asp-route-id="@item.Id"><i class="fa fa-edit pr-2"></i>Edit Data</a>
+                                                    <a class="dropdown-item" style=" color: green; border-bottom: 1px solid;" asp-action="FullPreview" asp-controller="AddFaultsInfo" asp-route-id="@item.Id"><i class="fa fa-eye pr-2"></i> View Data</a>
+                                                    <a class="dropdown-item" style="  color: #b70b0b; cursor:pointer" data-toggle="modal" data-target="@tm">
+                                                        <i class="fa fa-trash pr-2"></i>Delete Data
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="modal fade" id="@mid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                                                        </div>
+                                                        <div style="color:darkred" class="modal-body">
+                                                            Are you sure want to delete this item?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <a class="btn btn-danger" style=" font-size: large;" asp-action="Delete" asp-controller="AddFaultsInfo" asp-route-id="@item.Id">Delete</a>
+                                                            <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $('#datatable-responsive').dataTable({
+            "order": [[0, "desc"]]
+        });
+    </script>
+}
+
+

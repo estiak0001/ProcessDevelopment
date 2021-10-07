@@ -1,0 +1,811 @@
+﻿@model WebAppEs.ViewModel.FaultsEntry.MobileRNDFaultsEntryViewModel
+@inject IJsonHelper Json;
+
+@{ ViewData["Title"] = "Create"; }
+
+<style>
+    .select2-results {
+        color: black;
+    }
+
+    #select2-ddlModel-container {
+        color: black;
+    }
+</style>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.Raw(@ViewBag.Alert)
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 ">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Fault's Entry</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br />
+                <form class="form-label-left input_mask" asp-action="CreateFaultsInfo">
+                    <div class="row">
+                        <div style="border: 1px solid #2a5440; padding: 10px; border-radius: 8px; background-color: aliceblue;" class="col-md-12">
+                            <input asp-for="Id" id="txtHiddenID" type="hidden">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="col-md-4 col-sm-4  form-group has-feedback">
+                                        <label>Date</label>
+
+                                        @*<input asp-for="Date" class="form-control form-control-sm">
+                                            <span asp-validation-for="Date" class="text-danger"></span>*@
+                                        @if (Model.ButtonText == "Update")
+                                        {
+                            <input id="txtDate" disabled asp-for="Date" class="form-control" /> }
+                        else
+                        {
+            <input id="txtDate" asp-for="Date" class="form-control" />}
+                                        <span class="error">Please select date!</span>
+                                    </div>
+
+                                    <div class="col-md-4 col-sm-4  form-group has-feedback">
+                                        <label>Line No.</label>
+                                        <select asp-for="LineNo" id="ddlLine" class="form-control">
+                                            <option value="@Model.LineNo">--Select Line--</option>
+                                            <option value="1">Line 1</option>
+                                            <option value="2">Line 2</option>
+                                            <option value="3">Line 3</option>
+                                            <option value="4">Line 4</option>
+                                            <option value="5">Line 5</option>
+                                            <option value="6">Line 6</option>
+                                            <option value="7">Line 7</option>
+                                            <option value="8">Line 8</option>
+                                            <option value="9">Line 9</option>
+                                        </select>
+                                        <span class="error">Please select Line!</span>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4  form-group has-feedback">
+                                        <label>Model</label>
+                                        <select asp-for="PartsModelID" id="ddlModel" class="form-control">
+                                            <option value="@Model.PartsModelID">--Select Model--</option>
+                                            @foreach (var item in Model.PartsModelViewModel)
+                                            {
+                                <option value="@item.ID">@item.Name</option>
+}
+                                        </select>
+                                        <span id="ddlmodelError" class="error">Please select model!</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                        <label>Lot No.</label>
+                                        <select asp-for="LotNo" id="ddlLot" class="form-control">
+                                            <option value="@Model.LotNo">--Select Lot--</option>
+                                            <option value="1st">1st</option>
+                                            <option value="2nd">2nd</option>
+                                            <option value="3rd">3rd</option>
+                                            <option value="4th">4th</option>
+                                            <option value="5th">5th</option>
+                                            <option value="6th">6th</option>
+                                            <option value="7th">7th</option>
+                                            <option value="8th">8th</option>
+                                            <option value="9th">9th</option>
+                                            <option value="10th">10th</option>
+                                        </select>
+                                        <span class="error">Please select Lot!</span>
+                                    </div>
+                                    <div style="text-align: center;" class="col-md-6 col-sm-6  form-group has-feedback">
+                                        <label style=" text-align: center; font-weight: 900; color: brown;">Total Checked Qty.</label>
+                                        <input style=" background-color: #861111; color: wheat; text-align: center;" onclick="selectAllText(this.id)" asp-for="TotalCheckedQty" type="number" class="form-control" id="txtTotalCheckQty" placeholder="Enter Qty.">
+                                    </div>
+                                </div>
+                                <div style=" padding-left: 20px;">
+                                    <span class="text-danger" asp-validation-for="Date"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="border: 1px solid #2a5440; margin-top:10px; padding: 10px; border-radius: 8px; background-color: aliceblue;" class="col-md-6">
+                            <div class="form-group row">
+                                <label style="font-size: medium; font-weight: bold; color: darkred;" class="col-form-label col-md-3 col-sm-3 ">Functional Fault Qty</label>
+                                <div class="col-md-9 col-sm-9 ">
+                                    <div class="form-group row">
+                                        <div class="col-md-9 col-sm-9 ">
+                                            <label id="txtTotalFunctional" style=" padding: 10px; font-size: 15px;" class="badge badge-warning numberFunctional">@Model.TotalFunctionalFault</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-form-label col-md-3 col-sm-3 ">
+                                    Material
+                                </label>
+                                <div class="col-md-9 col-sm-9 ">
+                                    <input onclick="selectAllText(this.id)" asp-for="FuncMaterialFault" id="txtMaterialFaultFun" type="number" class="form-control form-control-sm numberFunctional" placeholder="Enter Qty.">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-form-label col-md-3 col-sm-3 ">Productiion </label>
+                                <div class="col-md-9 col-sm-9 ">
+                                    <input onclick="selectAllText(this.id)" asp-for="FuncProductionFault" id="txtProductionFaultFun" type="number" class="form-control form-control-sm numberFunctional" placeholder="Enter Qty.">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-form-label col-md-3 col-sm-3 ">Software</label>
+                                <div class="col-md-9 col-sm-9 ">
+                                    <input onclick="selectAllText(this.id)" asp-for="FuncSoftwareFault" id="txtSoftwareFaultFun" type="number" class="form-control form-control-sm numberFunctional" placeholder="Enter Qty.">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="border: 1px solid #2a5440; margin-top:10px; padding: 10px; border-radius: 8px; background-color: aliceblue;" class="col-md-6">
+                            <div class="form-group row">
+                                <label style="font-size: medium; font-weight: bold; color: darkred;" class="col-form-label col-md-3 col-sm-3 ">
+                                    Aesthetic Fault Qty
+                                </label>
+                                <div class="col-md-9 col-sm-9 ">
+                                    <label id="textTotalAesthetic" style=" padding: 10px; font-size: 15px;" class="badge badge-warning">@Model.TotalAestheticFault</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-form-label col-md-3 col-sm-3 ">Material</label>
+                                <div class="col-md-9 col-sm-9 ">
+                                    <input onclick="selectAllText(this.id)" asp-for="AesthMaterialFault" type="number" id="txtMaterialFaultAes" class="form-control form-control-sm numberAesthetic" placeholder="Enter Qty.">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-form-label col-md-3 col-sm-3 ">Production </label>
+                                <div class="col-md-9 col-sm-9 ">
+                                    <input onclick="selectAllText(this.id)" asp-for="AesthProductionFault" id="txtProductionFaultAes" type="number" class="form-control form-control-sm numberAesthetic" placeholder="Enter Qty.">
+                                </div>
+                            </div>
+                            @*<div class="ln_solid"></div>*@
+                        </div>
+                    </div>
+                    <div style="margin-top:10px">
+                        <div class="row">
+                            <div class="col-md-6">
+
+                            </div>
+                            <div style="text-align: end;" class="col-md-6">
+                                @if (Model.ButtonText == null)
+                                {
+                    <button id="btnSubmit" type="submit" class="btn btn-success">Submit Again</button> }
+                else
+                {
+    <button id="btnSubmit" type="submit" class="btn btn-success">@Model.ButtonText</button>}
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="x_panel">
+    <div class="x_title">
+        <h2>Faults Details <small>Add faults details here</small></h2>
+        <ul class="nav navbar-right panel_toolbox">
+            <li>
+                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Settings 1</a>
+                    <a class="dropdown-item" href="#">Settings 2</a>
+                </div>
+            </li>
+            <li>
+                <a class="close-link"><i class="fa fa-close"></i></a>
+            </li>
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+    <div class="container">
+        <!-- start form for validation -->
+        <form id="demo-form">
+
+            <div style="border: 1px solid #2a5440; padding:10px; margin-top: 15px; border-radius: 8px;">
+                <div class="row">
+                    <div class="col-md-2">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="txtFaultType">Fault Type* :</label>
+                        <input style=" background-color: #f7f7f7;" type="text" id="txtFaultType" class="form-control form-control-sm" name="txtFaultType" />
+                        <span class="error">Please enter fault type</span>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="quantity">Fault Qty.* :</label>
+                        <input style=" background-color: #f7f7f7;" type="number" id="quantity" class="form-control form-control-sm" name="quantity" />
+                        <span class="error">Valid quantity required</span>
+                    </div>
+                    <div class="col-md-2">
+                    </div>
+                </div>
+                <div style="margin-top:5px" class="row">
+                    <div class="col-md-4">
+                        <label for="txtRootCause">Root Cause* :</label>
+                        <textarea style=" background-color: #f7f7f7;" id="txtRootCause" class="form-control form-control-sm"></textarea>
+                        <span class="error">Root Cause required</span>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="txtSolution">Solution* :</label>
+                        <textarea style=" background-color: #f7f7f7;" id="txtSolution" class="form-control form-control-sm"></textarea>
+                        <span class="error">Solution required</span>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="txtRemarks">Remarks</label>
+                        <textarea style=" background-color: #f7f7f7;" id="txtRemarks" class="form-control form-control-sm"></textarea>
+                    </div>
+                </div>
+                <div style="text-align: center; ">
+                    <input type="button" class="addbutton" id="add" value="Add" />
+                </div>
+            </div>
+        </form>
+        <!-- end form for validations -->
+        <div style="margin-top:10px" id="faultsItem" class="tablecontainer">
+
+        </div>
+        <div style="margin-top:10px">
+            <div class="row">
+                <div class="col-md-6">
+                </div>
+                <div style="text-align:end" class="col-md-6">
+                    <button onclick="RedirectToPage()" class="btn btn-dark">Back To List</button>
+                    <button type="button" id="submit" class="btn btn-success">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div style="height:200px">
+
+</div>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.0.min.js" type="text/javascript"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/jquery-ui.min.js" type="text/javascript"></script>
+<link href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/themes/blitzer/jquery-ui.css"
+      rel="Stylesheet" type="text/css" />
+
+@section scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(document).ready(function () {
+            /*alert("");*/
+            const today = (function () {
+                const now = new Date();
+                const month = (now.getMonth() + 1).toString().padStart(2, '0');
+                const day = now.getDate().toString().padStart(2, '0');
+                return `${month}-${day}-${now.getFullYear()}`;
+            })();
+
+            //$("#ddlPartsModel").change(function () {
+            //    alert($("#ddlPartsModel").val());
+            //});
+
+            $('#ddlModel').select2({});
+
+            $('.numberFunctional').keyup(function () {
+                //alert("0")
+                var val1 = $("#txtMaterialFaultFun").val(),
+                    val2 = $("#txtProductionFaultFun").val(), val3 = $("#txtSoftwareFaultFun").val();
+                $("#txtTotalFunctional").text(Number(val1) + Number(val2) + Number(val3));
+            });
+            $('.numberAesthetic').keyup(function () {
+                //alert("0")
+                var val1 = $("#txtMaterialFaultAes").val(),
+                    val2 = $("#txtProductionFaultAes").val();
+                $("#textTotalAesthetic").text(Number(val1) + Number(val2));
+            });
+
+
+        });
+        function selectAllText(senderId) {
+            document.getElementById(senderId).focus();
+            document.getElementById(senderId).select();
+        }
+    </script>
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#txtFaultType").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action("FaultsTypeAutoComplete", "AddFaultsInfo")',
+                        data: { "prefix": request.term, "type": "FT"},
+                        type: "POST",
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return item;
+                            }))
+                        },
+                        //error: function (response) {
+                        //    alert(response.responseText);
+                        //},
+                        //failure: function (response) {
+                        //    alert(response.responseText);
+                        //}
+                    });
+                },
+                //select: function (e, i) {
+                //    $("#hfFaultsType").val(i.item.val);
+                //},
+                minLength: 1
+            });
+            $("#txtRootCause").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action("FaultsTypeAutoComplete", "AddFaultsInfo")',
+                        data: { "prefix": request.term, "type": "RC" },
+                        type: "POST",
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return item;
+                            }))
+                        }
+                    });
+                },
+                minLength: 1
+            });
+            $("#txtSolution").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action("FaultsTypeAutoComplete", "AddFaultsInfo")',
+                        data: { "prefix": request.term, "type": "SO" },
+                        type: "POST",
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return item;
+                            }))
+                        }
+                    });
+                },
+                minLength: 1
+            });
+            $("#txtRemarks").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action("FaultsTypeAutoComplete", "AddFaultsInfo")',
+                        data: { "prefix": request.term, "type": "RE" },
+                        type: "POST",
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return item;
+                            }))
+                        }
+                    });
+                },
+                minLength: 1
+            });
+        });
+    </script>
+    <script>
+        //Date Picker
+        $(function () {
+            $('#orderDate').datepicker({
+                dateFormat: 'mm-dd-yy'
+            });
+        });
+        $(document).ready(function () {
+            var faultsItem = [];
+            var LoadDataForEidit = @Json.Serialize(Model.MobileRNDFaultDetailsViewModel);
+            if (LoadDataForEidit != null) {
+                if (LoadDataForEidit.length != 0) {
+                    for (var h = 0; h < LoadDataForEidit.length; h++) {
+                        faultsItem.push({
+                            FaultType: LoadDataForEidit[h].faultType,
+                            FaultQty: LoadDataForEidit[h].faultQty,
+                            RootCause: LoadDataForEidit[h].rootCause,
+                            Solution: LoadDataForEidit[h].solution,
+                            Remarks: LoadDataForEidit[h].remarks,
+                        });
+                    }
+                    GeneratedItemsTable();
+                }
+            }
+
+            //Add button click function
+            $('#add').click(function () {
+                var isValidItem = true;
+                if ($('#txtFaultType').val().trim() == '') {
+                    isValidItem = false;
+                    $('#txtFaultType').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtFaultType').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if (!($('#quantity').val().trim() != '' && !isNaN($('#quantity').val().trim()))) {
+                    isValidItem = false;
+                    $('#quantity').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#quantity').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#txtRootCause').val().trim() == '') {
+                    isValidItem = false;
+                    $('#txtRootCause').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtRootCause').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#txtSolution').val().trim() == '') {
+                    isValidItem = false;
+                    $('#txtSolution').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtSolution').siblings('span.error').css('visibility', 'hidden');
+                }
+                $('#txtRemarks').siblings('span.error').css('visibility', 'hidden');
+                if (isValidItem) {
+                    faultsItem.push({
+                        FaultType: $('#txtFaultType').val().trim(),
+                        FaultQty: parseInt($('#quantity').val().trim()),
+                        RootCause: $('#txtRootCause').val().trim(),
+                        Solution: $('#txtSolution').val().trim(),
+                        Remarks: $('#txtRemarks').val().trim(),
+                    });
+                    $('#txtFaultType').val('').focus();
+                    $('#quantity,#rate,#txtRootCause, #txtSolution, #txtRemarks').val('');
+                }
+                GeneratedItemsTable();
+            });
+            //Save button click function
+            $('#submit').click(function () {
+                //validation of order
+                var isAllValid = true;
+                if (faultsItem.length == 0) {
+                    $('#faultsItem').html('<span style="color:red;">Please add faults details!</span>');
+                    isAllValid = false;
+                }
+
+                if ($('#txtDate').val().trim() == '') {
+                    $('#txtDate').siblings('span.error').css('visibility', 'visible');
+                    isAllValid = false;
+                }
+                else {
+                    $('#txtDate').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#ddlLine').val().trim() == '') {
+                    $('#ddlLine').siblings('span.error').css('visibility', 'visible');
+                    isAllValid = false;
+                }
+                else {
+                    $('#ddlLine').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#ddlModel').val().trim() == "00000000-0000-0000-0000-000000000000") {
+                    $('#ddlmodelError').css('visibility', 'visible');
+                    isAllValid = false;
+                }
+                else {
+                    $('#ddlmodelError').css('visibility', 'hidden');
+                }
+
+                if ($('#ddlLot').val().trim() == '') {
+                    $('#ddlLot').siblings('span.error').css('visibility', 'visible');
+                    isAllValid = false;
+                }
+                else {
+                    $('#ddlLot').siblings('span.error').css('visibility', 'hidden');
+                }
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        Date: $('#txtDate').val().trim(),
+                        LineNo: $('#ddlLine').val().trim(),
+                        PartsModelID: $('#ddlModel').val().trim(),
+                        LotNo: $('#ddlLot').val().trim(),
+                        MobileRNDFaultDetailsViewModel: faultsItem
+                    }
+
+                    $(this).val('Please wait...');
+
+                    $.ajax({
+                        url: '@Url.Action("FaultsDetailsAdd", "AddFaultsInfo")',
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            alert('Successfully done.');
+                            window.location.href = '@Url.Action("Index", "AddFaultsInfo")';
+                        },
+                        error: function () {
+                            alert('Error. Please try again.');
+                        }
+                    });
+                }
+            });
+
+            $('#ddlLot').on('change', function () {
+                //alert($('#ddlLine').val().trim());
+
+                if ($('#ddlLine').val().trim() == '' || $('#ddlModel').val().trim() == '') {
+                    alert("Please Select Line and Model First");
+                    $('#ddlLot').val("");
+                }
+                else {
+                    DropDownChangeData();
+                }
+            });
+            $('#ddlModel').on('change', function () {
+                if ($('#ddlLine').val().trim() == '') {
+                    alert("Please Select Line First!");
+                    $('#ddlModel').val("");
+                }
+                else if ($('#ddlLine').val().trim() != '' && $('#ddlLot').val().trim() == '')
+                {
+
+                }
+                else {
+                    DropDownChangeData();
+                }
+            });
+            $('#ddlLine').on('change', function () {
+                //alert($('#ddlLine').val().trim());
+
+                if ($('#ddlModel').val().trim() == '' || $('#ddlLot').val().trim() == '') {
+                    //alert("Please Select Line and Model First");
+                    //$('#ddlLot').val("");
+                    ////alert($('#txtDate').val().trim());
+                }
+                else {
+                    DropDownChangeData();
+                }
+            });
+            $('#txtDate').on('change', function () {
+
+                if ($('#ddlLine').val().trim() == '' || $('#ddlModel').val().trim() == '' || $('#ddlLot').val().trim() == '') {
+
+                }
+                else {
+                    DropDownChangeData();
+                }
+            });
+
+            function DropDownChangeData() {
+                var data = {
+                        Date: $('#txtDate').val().trim(),
+                        LineNo: $('#ddlLine').val().trim(),
+                        PartsModelID: $('#ddlModel').val().trim(),
+                        LotNo: $('#ddlLot').val().trim(),
+                    }
+                    $.ajax({
+                        data: data,
+                        url: '@Url.Action("LoadFullSetData", "AddFaultsInfo")',
+                        type: 'GET',
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (result) {
+                            if (result != null) {
+                                faultsItem = [];
+                                //hidden Id for Update
+                                $('#txtHiddenID').val(result.id);
+
+                                $('#txtTotalCheckQty').val(result.totalCheckedQty)
+                                //Functional Data
+                                $('#txtTotalFunctional').text(result.totalFunctionalFault);
+                                $('#txtMaterialFaultFun').val(result.funcMaterialFault);
+                                $('#txtProductionFaultFun').val(result.funcProductionFault);
+                                $('#txtSoftwareFaultFun').val(result.funcSoftwareFault);
+
+                                //Aesthetic Data
+                                $('#textTotalAesthetic').text(result.totalAestheticFault);
+                                $('#txtMaterialFaultAes').val(result.aesthMaterialFault);
+                                $('#txtProductionFaultAes').val(result.aesthProductionFault);
+
+                                //button text
+                                $('#btnSubmit').text('Update');
+
+                                console.log(result);
+
+                                for (var h = 0; h < result.mobileRNDFaultDetailsViewModel.length; h++) {
+                                    faultsItem.push({
+                                        FaultType: result.mobileRNDFaultDetailsViewModel[h].faultType,
+                                        FaultQty: result.mobileRNDFaultDetailsViewModel[h].faultQty,
+                                        RootCause: result.mobileRNDFaultDetailsViewModel[h].rootCause,
+                                        Solution: result.mobileRNDFaultDetailsViewModel[h].solution,
+                                        Remarks: result.mobileRNDFaultDetailsViewModel[h].remarks,
+                                    });
+                                }
+                                if (result.mobileRNDFaultDetailsViewModel.length != 0) {
+                                    GeneratedItemsTable();
+                                    $('#submit').text('Update');
+                                }
+                                console.log(faultsItem);
+                            }
+                            else {
+                                $('#txtHiddenID').val("00000000-0000-0000-0000-000000000000");
+                                $('#txtTotalCheckQty').val("")
+                                $('#txtTotalFunctional').text("0");
+                                $('#txtMaterialFaultFun').val("");
+                                $('#txtProductionFaultFun').val("");
+                                $('#txtSoftwareFaultFun').val("");
+
+                                $('#textTotalAesthetic').text('0');
+                                $('#txtMaterialFaultAes').val("");
+                                $('#txtProductionFaultAes').val("");
+
+                                faultsItem = [];
+                                GeneratedItemsTable();
+
+                                $('#btnSubmit').text('Submit');
+                                $('#submit').text('Submit')
+                            }
+
+                        }
+                    });
+            }
+            //function for show added items in table
+
+            function GeneratedItemsTable() {
+                if (faultsItem.length > 0) {
+                    var $table = $('<table id="datatable-fixed-header" class="table table-sm table-striped table-bordered" style="width:100%"/>');
+                    $table.append('<thead style = "background-color: #2a3f54; color: white;"><tr><th>Faults Type</th><th>Quantity</th><th>Root Cause</th><th>Solution</th><th>Remarks</th><th></th></tr></thead>');
+                    var $tbody = $('<tbody/>');
+                    $.each(faultsItem, function (i, val) {
+                        var $row = $('<tr/>');
+                        $row.append($('<td/>').html(val.FaultType));
+                        $row.append($('<td/>').html(val.FaultQty));
+                        $row.append($('<td/>').html(val.RootCause));
+                        $row.append($('<td/>').html(val.Solution));
+                        $row.append($('<td/>').html(val.Remarks));
+                        var $remove = $('<a href="#"><i style="font-size: 17px; color:red;" class="fa fa-trash"></i></a>');
+                        $remove.click(function (e) {
+                            e.preventDefault();
+                            faultsItem.splice(i, 1);
+                            GeneratedItemsTable();
+                        });
+                        $row.append($('<td/>').html($remove));
+                        $tbody.append($row);
+                    });
+                    console.log("current", faultsItem);
+                    $table.append($tbody);
+                    $('#faultsItem').html($table);
+                }
+                else {
+                    $('#faultsItem').html('');
+                }
+            }
+        });
+
+        function RedirectToPage() {
+            window.location.href = '@Url.Action("Index", "AddFaultsInfo")';
+        }
+
+    </script>
+}
+
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+    .addbutton {
+        display: inline-block;
+        padding: 0px 25px;
+        font-size: 19px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        outline: none;
+        color: #fff;
+        background-color: #4CAF50;
+        border: none;
+        border-radius: 15px;
+        margin: 15px;
+    }
+
+        .addbutton:hover {
+            background-color: #3e8e41
+        }
+
+        .addbutton:active {
+            background-color: #3e8e41;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+    /*css for table*/
+    /*.container td {
+        vertical-align: top;
+    }
+
+    .tablecontainer table {
+        width: 100%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+    }
+
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }*/
+
+    .tablecontainer th, .tablecontainer td {
+        text-align: center;
+    }
+
+    /*.ui-widget {
+        font-size: 12px !important;
+    }*/
+    .ui-autocomplete {
+        max-height: 200px;
+        max-width: 700px;
+        overflow-y: auto;
+        overflow-x: auto;
+
+    }
+    .ui-autocomplete {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        float: left;
+        display: none;
+        min-width: 160px;
+        padding: 4px 0;
+        margin: 0 0 10px 25px;
+        list-style: none;
+        background-color: #ffffff;
+        border-color: #ccc;
+        border-color: rgba(0, 0, 0, 0.2);
+        border-style: solid;
+        border-width: 1px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        -webkit-background-clip: padding-box;
+        -moz-background-clip: padding;
+        background-clip: padding-box;
+        *border-right-width: 2px;
+        *border-bottom-width: 2px;
+    }
+
+    .ui-menu-item > a.ui-corner-all {
+        display: block;
+        padding: 3px 15px;
+        clear: both;
+        font-weight: normal;
+        line-height: 18px;
+        color: #555555;
+        white-space: nowrap;
+        text-decoration: none;
+    }
+
+    .ui-state-hover, .ui-state-active {
+        color: #ffffff;
+        text-decoration: none;
+        background-color: #0088cc;
+        border-radius: 0px;
+        -webkit-border-radius: 0px;
+        -moz-border-radius: 0px;
+        background-image: none;
+    }
+</style>

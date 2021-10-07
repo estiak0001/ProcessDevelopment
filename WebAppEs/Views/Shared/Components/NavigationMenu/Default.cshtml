@@ -1,0 +1,48 @@
+﻿@model List<WebAppEs.Models.NavigationMenuViewModel>
+@{
+    ViewData["Title"] = "NavigationMenu";
+}
+
+<div class="menu_section">
+    <ul class="nav side-menu">
+        @foreach (var item in Model)
+        {
+            if (item.ParentMenuId == null) //Level one items will have null parent id
+            {
+                if (!string.IsNullOrWhiteSpace(item.ControllerName))
+                {
+                    <li>
+                        <a asp-area="@item.Area" asp-controller="@item.ControllerName" asp-action="@item.ActionName"><i class="fa fa-circle"></i> @item.Name dfghdf</a>
+                    </li>
+                }
+                if (item.IsExternal && !string.IsNullOrWhiteSpace(item.ExternalUrl))
+                {
+                    <li>
+                        <a target="_blank" href="@item.ExternalUrl"><i class="fa fa-circle"></i> @item.Name</a>
+                    </li>
+                }
+                var children = Model.Where(x => x.ParentMenuId == item.Id && x.Visible).OrderBy(x => x.DisplayOrder).ToList();
+                if (children != null)
+                {
+                    <li>
+
+                        <a><i class="fa fa-circle"></i> @item.Name <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            @foreach (var itm in children)
+                            {
+                                if (itm.IsExternal && !string.IsNullOrWhiteSpace(itm.ExternalUrl))
+                                {
+                                    <li><a href="@itm.ExternalUrl">@itm.Name</a></li>
+                                }
+                                else
+                                {
+                                    <li><a asp-area="@item.Area" asp-controller="@itm.ControllerName" asp-action="@itm.ActionName">@itm.Name</a></li>
+                                }
+                            }
+                        </ul>
+                    </li>
+                }
+            }
+        }
+    </ul>
+</div>

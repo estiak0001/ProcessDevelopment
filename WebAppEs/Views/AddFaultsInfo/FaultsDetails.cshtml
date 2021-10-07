@@ -1,0 +1,403 @@
+﻿@model WebAppEs.ViewModel.FaultsEntry.MobileRNDFaultsEntryViewModel
+@{ ViewData["Title"] = "Create"; }
+@Html.AntiForgeryToken()
+<div class="x_panel">
+    <div class="x_title">
+        <h2>Faults Details</h2>
+        <ul class="nav navbar-right panel_toolbox">
+            <li>
+                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Settings 1</a>
+                    <a class="dropdown-item" href="#">Settings 2</a>
+                </div>
+            </li>
+            <li>
+                <a class="close-link"><i class="fa fa-close"></i></a>
+            </li>
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+    <div class="container">
+        <!-- start form for validation -->
+        <form id="demo-form">
+            <div class="row">
+                <div style="border: 1px solid #2a5440; padding: 10px; border-radius: 8px; background-color: aliceblue;" class="col-md-12">
+                    <input asp-for="Id" id="txtHiddenID" type="hidden">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="col-md-4 col-sm-4  form-group has-feedback">
+                                <label>Date</label>
+
+                                @*<input asp-for="Date" class="form-control form-control-sm">
+                                    <span asp-validation-for="Date" class="text-danger"></span>*@
+                                @if (Model.ButtonText == "Update")
+                                {
+                                <input id="txtDate" disabled asp-for="Date" class="form-control" /> }
+                else
+                {
+                                <input id="txtDate" asp-for="Date" class="form-control" />}
+                                <span class="error">Please select date!</span>
+                            </div>
+
+                            <div class="col-md-4 col-sm-4  form-group has-feedback">
+                                <label>Line No.</label>
+                                <select asp-for="LineNo" id="ddlLine" class="form-control">
+                                    <option value="@Model.LineNo">--Select Line--</option>
+                                    <option value="1">Line 1</option>
+                                    <option value="2">Line 2</option>
+                                    <option value="3">Line 3</option>
+                                    <option value="4">Line 4</option>
+                                    <option value="5">Line 5</option>
+                                    <option value="6">Line 6</option>
+                                    <option value="7">Line 7</option>
+                                    <option value="8">Line 8</option>
+                                    <option value="9">Line 9</option>
+                                </select>
+                                <span class="error">Please select Line!</span>
+                            </div>
+                            <div class="col-md-4 col-sm-4  form-group has-feedback">
+                                <label>Model</label>
+                                <select asp-for="PartsModelID" id="ddlModel" class="form-control">
+                                    <option value="@Model.PartsModelID">--Select Model--</option>
+                                    @foreach (var item in Model.PartsModelViewModel)
+                                    {
+                                    <option value="@item.ID">@item.Name</option>
+}
+                                </select>
+                                <span id="ddlmodelError" class="error">Please select model!</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                <label>Lot No.</label>
+                                <select asp-for="LotNo" id="ddlLot" class="form-control">
+                                    <option value="@Model.LotNo">--Select Lot--</option>
+                                    <option value="1st">1st</option>
+                                    <option value="2nd">2nd</option>
+                                    <option value="3rd">3rd</option>
+                                    <option value="4th">4th</option>
+                                    <option value="5th">5th</option>
+                                    <option value="6th">6th</option>
+                                    <option value="7th">7th</option>
+                                    <option value="8th">8th</option>
+                                    <option value="9th">9th</option>
+                                    <option value="10th">10th</option>
+                                </select>
+                                <span class="error">Please select Lot!</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="border: 1px solid #2a5440; padding:10px; margin-top: 15px; border-radius: 8px;">
+                <div class="row">
+                    <div class="col-md-2">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="txtFaultType">Fault Type* :</label>
+                        <input style=" background-color: #f7f7f7;" type="text" id="txtFaultType" class="form-control form-control-sm" name="txtFaultType" />
+                        <span class="error">Please enter fault type</span>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="quantity">Fault Qty.* :</label>
+                        <input style=" background-color: #f7f7f7;" type="number" id="quantity" class="form-control form-control-sm" name="quantity" />
+                        <span class="error">Valid quantity required</span>
+                    </div>
+                    <div class="col-md-2">
+                    </div>
+                </div>
+                <div style="margin-top:5px" class="row">
+                    <div class="col-md-4">
+                        <label for="txtRootCause">Root Cause* :</label>
+                        <textarea style=" background-color: #f7f7f7;" id="txtRootCause" class="form-control form-control-sm"></textarea>
+                        <span class="error">Root Cause required</span>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="txtSolution">Solution* :</label>
+                        <textarea style=" background-color: #f7f7f7;" id="txtSolution" class="form-control form-control-sm"></textarea>
+                        <span class="error">Solution required</span>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="txtRemarks">Remarks</label>
+                        <textarea style=" background-color: #f7f7f7;" id="txtRemarks" class="form-control form-control-sm"></textarea>
+                    </div>
+                </div>
+                <div style="text-align: center; ">
+                    <input type="button" class="addbutton" id="add" value="Add" />
+                </div>
+            </div>
+        </form>
+        <!-- end form for validations -->
+        <div style="margin-top:10px" id="faultsItem" class="tablecontainer">
+
+        </div>
+        <div style="margin-top:10px">
+            <div class="row">
+                <div class="col-md-6">
+
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <div class="col-md-9 col-sm-9  offset-md-3">
+                            <button onclick="RedirectToPage()" class="btn btn-dark">Back To List</button>
+                            @*<button class="btn btn-primary" type="reset">Reset</button>*@
+                            <button type="button" id="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+@section Scripts{
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+        //Date Picker
+        $(function () {
+            $('#orderDate').datepicker({
+                dateFormat: 'mm-dd-yy'
+            });
+        });
+
+        $(document).ready(function () {
+            var faultsItem = [];
+            //Add button click function
+            $('#add').click(function () {
+                //Check validation of order item
+                var isValidItem = true;
+                if ($('#txtFaultType').val().trim() == '') {
+                    isValidItem = false;
+                    $('#txtFaultType').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtFaultType').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if (!($('#quantity').val().trim() != '' && !isNaN($('#quantity').val().trim()))) {
+                    isValidItem = false;
+                    $('#quantity').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#quantity').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#txtRootCause').val().trim() == '') {
+                    isValidItem = false;
+                    $('#txtRootCause').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtRootCause').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#txtSolution').val().trim() == '') {
+                    isValidItem = false;
+                    $('#txtSolution').siblings('span.error').css('visibility', 'visible');
+                }
+                else {
+                    $('#txtSolution').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                $('#txtRemarks').siblings('span.error').css('visibility', 'hidden');
+
+                //if ($('#txtRemarks').val().trim() == '') {
+                //    isValidItem = false;
+                //    $('#txtRemarks').siblings('span.error').css('visibility', 'visible');
+                //}
+                //else {
+                //    $('#txtRemarks').siblings('span.error').css('visibility', 'hidden');
+                //}
+
+                //Add item to list if valid
+                if (isValidItem) {
+                    faultsItem.push({
+                        FaultType: $('#txtFaultType').val().trim(),
+                        FaultQty: parseInt($('#quantity').val().trim()),
+                        RootCause: $('#txtRootCause').val().trim(),
+                        Solution: $('#txtSolution').val().trim(),
+                        Remarks: $('#txtRemarks').val().trim(),
+                    });
+
+                    //Clear fields
+                    $('#txtFaultType').val('').focus();
+                    $('#quantity,#rate,#txtRootCause, #txtSolution, #txtRemarks').val('');
+                }
+                //populate order items
+                GeneratedItemsTable();
+
+            });
+            //Save button click function
+            $('#submit').click(function () {
+                //validation of order
+                var isAllValid = true;
+                if (faultsItem.length == 0) {
+                    $('#faultsItem').html('<span style="color:red;">Please add faults details!</span>');
+                    isAllValid = false;
+                }
+
+                if ($('#txtDate').val().trim() == '') {
+                    $('#txtDate').siblings('span.error').css('visibility', 'visible');
+                    isAllValid = false;
+                }
+                else {
+                    $('#txtDate').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#ddlLine').val().trim() == '') {
+                    $('#ddlLine').siblings('span.error').css('visibility', 'visible');
+                    isAllValid = false;
+                }
+                else {
+                    $('#ddlLine').siblings('span.error').css('visibility', 'hidden');
+                }
+
+                if ($('#ddlModel').val().trim() == "00000000-0000-0000-0000-000000000000") {
+                    $('#ddlmodelError').css('visibility', 'visible');
+                    isAllValid = false;
+                }
+                else {
+                    $('#ddlmodelError').css('visibility', 'hidden');
+                }
+
+                if ($('#ddlLot').val().trim() == '') {
+                    $('#ddlLot').siblings('span.error').css('visibility', 'visible');
+                    isAllValid = false;
+                }
+                else {
+                    $('#ddlLot').siblings('span.error').css('visibility', 'hidden');
+                }
+                //Save if valid
+                if (isAllValid) {
+                    var data = {
+                        Date: $('#txtDate').val().trim(),
+                        LineNo: $('#ddlLine').val().trim(),
+                        PartsModelID: $('#ddlModel').val().trim(),
+                        LotNo: $('#ddlLot').val().trim(),
+                        MobileRNDFaultDetailsViewModel: faultsItem
+                    }
+
+                    $(this).val('Please wait...');
+
+                    $.ajax({
+                        url: '@Url.Action("FaultsDetailsAdd", "AddFaultsInfo")',
+                        //url: '/AddFaultsInfo/FaultsDetailsAdd',
+                        //beforeSend: function (xhr) {
+                        //    xhr.setRequestHeader("RequestVerificationToken",
+                        //        $('input:hidden[name="__RequestVerificationToken"]').val());
+                        //},
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        success: function (d) {
+                            alert('Successfully done.');
+                            window.location.href = '@Url.Action("Index", "AddFaultsInfo")';
+                        },
+                        error: function () {
+                            alert('Error. Please try again.');
+                        }
+                    });
+                }
+            });
+            //function for show added items in table
+
+            function GeneratedItemsTable() {
+                if (faultsItem.length > 0) {
+                    var $table = $('<table id="datatable-fixed-header" class="table table-sm table-striped table-bordered" style="width:100%"/>');
+                    $table.append('<thead style = "background-color: #2a3f54; color: white;"><tr><th>Faults Type</th><th>Quantity</th><th>Root Cause</th><th>Solution</th><th>Remarks</th><th></th></tr></thead>');
+                    var $tbody = $('<tbody/>');
+                    $.each(faultsItem, function (i, val) {
+                        var $row = $('<tr/>');
+                        $row.append($('<td/>').html(val.FaultType));
+                        $row.append($('<td/>').html(val.FaultQty));
+                        $row.append($('<td/>').html(val.RootCause));
+                        $row.append($('<td/>').html(val.Solution));
+                        $row.append($('<td/>').html(val.Remarks));
+                        var $remove = $('<a href="#"><i style="font-size: 17px; color:red;" class="fa fa-trash"></i></a>');
+                        $remove.click(function (e) {
+                            e.preventDefault();
+                            faultsItem.splice(i, 1);
+                            GeneratedItemsTable();
+                        });
+                        $row.append($('<td/>').html($remove));
+                        $tbody.append($row);
+                    });
+                    console.log("current", faultsItem);
+                    $table.append($tbody);
+                    $('#faultsItem').html($table);
+                }
+                else {
+                    $('#faultsItem').html('');
+                }
+            }
+        });
+
+        function RedirectToPage() {
+            window.location.href = '@Url.Action("Index", "AddFaultsInfo")';
+        }
+
+    </script>
+}
+
+<style>
+    /*Adding some css for looks good*/
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+    .addbutton {
+        display: inline-block;
+        padding: 0px 25px;
+        font-size: 19px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        outline: none;
+        color: #fff;
+        background-color: #4CAF50;
+        border: none;
+        border-radius: 15px;
+        margin: 15px;
+    }
+
+        .addbutton:hover {
+            background-color: #3e8e41
+        }
+
+        .addbutton:active {
+            background-color: #3e8e41;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+    /*css for table*/
+    /*.container td {
+        vertical-align: top;
+    }
+
+    .tablecontainer table {
+        width: 100%;
+        border-collapse: collapse;
+        border-top: 1px solid #BFAEAE;
+        border-right: 1px solid #BFAEAE;
+    }
+
+    .tablecontainer th {
+        border-bottom: 2px solid #BFAEAE !important;
+    }*/
+
+    .tablecontainer th, .tablecontainer td {
+        text-align: center;
+    }
+
+    /*.ui-widget {
+        font-size: 12px !important;
+    }*/
+</style>
