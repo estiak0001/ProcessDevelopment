@@ -58,6 +58,7 @@ namespace WebAppEs.Controllers
 				dashboard.FunctionalFaultsPercentageViewModel = chartdata.FunctionalFaultsPercentageViewModel;
 				dashboard.AestheticFaultsPercentageViewModel = chartdata.AestheticFaultsPercentageViewModel;
 			}
+			//li
 			dashboard.Date = LastEntryDate;
 			return View(dashboard);
 		}
