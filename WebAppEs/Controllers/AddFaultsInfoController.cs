@@ -42,7 +42,6 @@ namespace WebAppEs.Controllers
             {
                 return RedirectToAction("Logout", "Account");
             }
-
             ClaimsPrincipal currentUser = this.User;
             var ID = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
             bool isSuperAdmin = currentUser.IsInRole("SuperAdmin");
@@ -58,15 +57,12 @@ namespace WebAppEs.Controllers
             }
             else
             {
-
                 MobileRNDFaultsEntryViewModel viewmodel = new MobileRNDFaultsEntryViewModel();
                 var data = _dataAccessService.GetAllFaultsList(employeeID);
                 viewmodel.PartsModelViewModel = _dataAccessService.GetAllPartsModelList();
                 viewmodel.MobileRNDFaultsEntryViewModelList = data;
                 return View(viewmodel);
             }
-
-            
         }
 
         [Authorize("Authorization")]

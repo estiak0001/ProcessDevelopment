@@ -38,9 +38,9 @@ namespace WebAppEs.Controllers
 			var lastSevenDayStart =  DateTime.Today.AddDays(-7);
 			var lastMonthDayStart = DateTime.Today.AddDays(-30);
 
-			//var LastEntryDate = _dataAccessService.LastDate();
+			var LastEntryDate = _dataAccessService.LastDate();
 
-			var chartdata = _dataAccessService.GetSingelDayData(yesterday);
+			var chartdata = _dataAccessService.GetSingelDayData(LastEntryDate);
 
 			DashboasrViewModel dashboard = new DashboasrViewModel();
 			
@@ -58,7 +58,7 @@ namespace WebAppEs.Controllers
 				dashboard.FunctionalFaultsPercentageViewModel = chartdata.FunctionalFaultsPercentageViewModel;
 				dashboard.AestheticFaultsPercentageViewModel = chartdata.AestheticFaultsPercentageViewModel;
 			}
-			dashboard.Date = yesterday;
+			dashboard.Date = LastEntryDate;
 			return View(dashboard);
 		}
 		//[Authorize("Authorization")]
