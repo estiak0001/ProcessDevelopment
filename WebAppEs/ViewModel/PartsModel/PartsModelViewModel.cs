@@ -13,6 +13,8 @@ namespace WebAppEs.ViewModel.PartsModel
         [Required]
         public string Name { get; set; }
 
+        public string Supplier { get; set; }
+
         public string IsUpdate { get; set; }
     }
 }

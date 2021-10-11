@@ -16,5 +16,9 @@ namespace WebAppEs.Entity
         [Required]
         [StringLength(150)]
         public string ModelName { get; set; }
+
+
+        [StringLength(150)]
+        public string Supplier { get; set; }
     }
 }

@@ -26,20 +26,24 @@
                             <thead style="background-color: #d7e3ef;">
                                 <tr>
                                     <th>Name</th>
+                                    <th>Supplier</th>
                                     <th style="text-align:center">Action's</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var item in Model)
                                 {
-                                    <tr>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Name)
-                                        </td>
-                                        <td style="text-align:center">
-                                            <a style=" font-size: large; color: blue;" asp-action="CreateModel" asp-controller="ProductModel" asp-route-id="@item.ID"><i class="fa fa-edit"></i></a>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Supplier)
+                                    </td>
+                                    <td style="text-align:center">
+                                        <a style=" font-size: large; color: blue;" asp-action="CreateModel" asp-controller="ProductModel" asp-route-id="@item.ID"><i class="fa fa-edit"></i></a>
+                                    </td>
+                                </tr>
                                  }
                             </tbody>
                         </table>

@@ -156,28 +156,31 @@ namespace WebAppEs.Services
 			var UpdateDataSet = await _context.MobileRNDPartsModels.Where(x => x.Id == viewModel.ID).FirstOrDefaultAsync();
 			var existing = await _context.MobileRNDPartsModels.Where(x => x.ModelName == viewModel.Name).FirstOrDefaultAsync();
 
-			if(existing != null)
-            {
-				return false;
-			}
-            else
-            {
-				if(UpdateDataSet != null)
-                {
-					UpdateDataSet.ModelName = viewModel.Name;
-
-					_context.MobileRNDPartsModels.Update(UpdateDataSet);
-					result = await _context.SaveChangesAsync();
+			if (UpdateDataSet == null)
+			{
+				if (existing != null)
+				{
+					return false;
 				}
-                else
-                {
+				else
+				{
 					_context.MobileRNDPartsModels.Add(new MobileRNDPartsModels()
 					{
-						ModelName = viewModel.Name
+						ModelName = viewModel.Name,
+						Supplier = viewModel.Supplier
 					});
 					result = await _context.SaveChangesAsync();
 				}
 			}
+			else
+			{
+				UpdateDataSet.ModelName = viewModel.Name;
+				UpdateDataSet.Supplier = viewModel.Supplier;
+
+				_context.MobileRNDPartsModels.Update(UpdateDataSet);
+				result = await _context.SaveChangesAsync();
+			}
+
 			return result > 0;
 		}
 
@@ -188,7 +191,8 @@ namespace WebAppEs.Services
 							   select new PartsModelViewModel()
 							   {
 								   ID = partModel.Id,
-								   Name = partModel.ModelName
+								   Name = partModel.ModelName,
+								   Supplier = partModel.Supplier
 							   }).ToList();
 			return items;
 		}

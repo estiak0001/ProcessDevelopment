@@ -199,7 +199,9 @@
                     }
 
                     var d = new Date(val.date);
-                    var d_formatted = d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear();
+                    var d_formatted = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
+                    //alert(d_formatted);
+
                     var $row = $('<tr/>');
                     $row.append($('<td/>').html(d_formatted));
                     $row.append($('<td/>').html(val.line));
