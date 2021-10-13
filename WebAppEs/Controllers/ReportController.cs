@@ -71,10 +71,10 @@ namespace WebAppEs.Controllers
             using (var workbook = new XLWorkbook())
             {
                 //String[] format = { "dd-MM-yy" };
-                var fromDatestring = String.Format("{0:M-d-yyyy}", viewmodel.FromDate);
-                var todatestring = String.Format("{0:M-d-yyyy}", viewmodel.ToDate);
-                var fileName = "Faults (" + fromDatestring + " to " + todatestring + ")";
-                var fileName2 = "Faults (" + fromDatestring + " to " + todatestring + ").xlsx";
+                var fromDatestring = String.Format("{0:M-d-yy}", viewmodel.FromDate);
+                var todatestring = String.Format("{0:M-d-yy}", viewmodel.ToDate);
+                var fileName = "Faults(" + fromDatestring + " to " + todatestring + ")";
+                var fileName2 = "Faults(" + fromDatestring + " to " + todatestring + ").xlsx";
 
                 if (fromDatestring == "" && todatestring == "")
                 {
