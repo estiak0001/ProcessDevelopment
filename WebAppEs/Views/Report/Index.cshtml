@@ -1,10 +1,6 @@
 ﻿@model WebAppEs.ViewModel.Report.ReportViewModel
 @{ ViewData["Title"] = "Report"; }
-
-<div class="loading">
-    Loading&#8230;
-</div>
-
+<partial name="_BusyIndicatoPartial" />
 <div class="x_panel">
     <a style="float:right" class="btn btn-info" asp-action="PrintDetails"> <i class="fa fa-print pr-2"></i>Faults Details</a>
     <div class="x_title">
@@ -117,13 +113,20 @@
 @section scripts{
     <script>
         $(document).ready(function () {
+            
             var PreviewData = [];
             $('#ddlModel, #ddlEmployee').select2({
             });
             $("#btnPreview").click(function () {
-                LoadPreview()
+                displayBusyIndicator();
+                LoadPreview();
+                StopBusyIndicator();
             });
-
+            $('#btnSubmit').on('click', function (event) {
+                displayBusyIndicator();
+                $('#reportform').submit();
+                StopBusyIndicator();
+                });
         });
         function LoadPreview() {
 
@@ -179,27 +182,36 @@
                     count++;
 
                     sumOfTotalCheck += val.totalCheckedQty;
+
+                    FuncMat += val.funcMaterialFault;
+                    funcProd += val.funcProductionFault;
+                    funcSoft += val.funcSoftwareFault;
+                    sumOfTotalFunc += val.totalFunctionalFault;
+
+                    AesMat += val.aesthMaterialFault;
+                    AesProd += val.aesthProductionFault;
+                    sumOfTotalAes += val.totalAestheticFault;
                     
-                    if (isChecked) {
-                        FuncMat += val.funcMaterialFault;
-                        funcProd += val.funcProductionFault;
-                        funcSoft += val.funcSoftwareFault;
-                        sumOfTotalFunc += val.totalFunctionalFault;
+                    //if (isChecked) {
+                    //    FuncMat += val.funcMaterialFault;
+                    //    funcProd += val.funcProductionFault;
+                    //    funcSoft += val.funcSoftwareFault;
+                    //    sumOfTotalFunc += val.totalFunctionalFault;
 
-                        AesMat += val.aesthMaterialFault;
-                        AesProd += val.aesthProductionFault;
-                        sumOfTotalAes += val.totalAestheticFault;
-                    }
-                    else {
-                        FuncMat += val.funcMaterialFaultd;
-                        funcProd += val.funcProductionFaultd;
-                        funcSoft += val.funcSoftwareFaultd;
-                        sumOfTotalFunc += val.totalFunctionalFaultd;
+                    //    AesMat += val.aesthMaterialFault;
+                    //    AesProd += val.aesthProductionFault;
+                    //    sumOfTotalAes += val.totalAestheticFault;
+                    //}
+                    //else {
+                    //    FuncMat += val.funcMaterialFaultd;
+                    //    funcProd += val.funcProductionFaultd;
+                    //    funcSoft += val.funcSoftwareFaultd;
+                    //    sumOfTotalFunc += val.totalFunctionalFaultd;
 
-                        AesMat += val.aesthMaterialFaultd;
-                        AesProd += val.aesthProductionFaultd;
-                        sumOfTotalAes += val.totalAestheticFaultd;
-                    }
+                    //    AesMat += val.aesthMaterialFaultd;
+                    //    AesProd += val.aesthProductionFaultd;
+                    //    sumOfTotalAes += val.totalAestheticFaultd;
+                    //}
 
                     var d = new Date(val.date);
                     var d_formatted = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
@@ -241,8 +253,10 @@
                     );
                 }
                 else {
+                    
                     $("#datatable-responsive").append(
-                        $('<tfoot/>').append('<tr><td style="text-align: center;font-weight: bold;color: darkmagenta;font-size: medium;" colspan="4">Total Sum</td> <td style=" font-size: medium; background-color: #a52a2a; font-weight: bold; text-align: center;color: white;">' + sumOfTotalCheck + '</td> <td style=" font-size: medium; background-color: #d7d7d7; font-weight: bold; text-align: center;">' + (FuncMat / count).toFixed(2) + '%</td> <td style=" font-size: medium; background-color: #d7d7d7; font-weight: bold; text-align: center;">' + (funcProd / count).toFixed(2) + '%</td> <td style=" font-size: medium; background-color: #d7d7d7; font-weight: bold; text-align: center;">' + (funcSoft / count).toFixed(2) + '%</td><td style="font-size: medium; background-color: #a52a2a; font-weight: bold; text-align: center;color: white;">' + (sumOfTotalFunc / count).toFixed(2) + '%</td><td style=" font-size: medium; background-color: #d7d7d7; font-weight: bold; text-align: center;">' + (AesMat / count).toFixed(2) + '%</td><td style=" font-size: medium; background-color: #d7d7d7; font-weight: bold; text-align: center;">' + (AesProd / count).toFixed(2) + '%</td><td style="font-size: medium; background-color: #a52a2a; font-weight: bold; text-align: center;color: white;">' + (sumOfTotalAes / count).toFixed(2) + '%</td></tr>')
+                        
+                        $('<tfoot/>').append('<tr><td style="text-align: center;font-weight: bold;color: darkmagenta;font-size: medium;" colspan="4">Total Sum</td> <td style=" font-size: medium; background-color: #a52a2a; font-weight: bold; text-align: center;color: white;">' + sumOfTotalCheck + '</td> <td style=" font-size: medium; background-color: #d7d7d7; font-weight: bold; text-align: center;">' + ((FuncMat / sumOfTotalCheck) * 100).toFixed(2) + '%</td> <td style=" font-size: medium; background-color: #d7d7d7; font-weight: bold; text-align: center;">' + ((funcProd / sumOfTotalCheck) * 100).toFixed(2) + '%</td> <td style=" font-size: medium; background-color: #d7d7d7; font-weight: bold; text-align: center;">' + ((funcSoft / sumOfTotalCheck) * 100).toFixed(2) + '%</td><td style="font-size: medium; background-color: #a52a2a; font-weight: bold; text-align: center;color: white;">' + ((sumOfTotalFunc / sumOfTotalCheck) * 100).toFixed(2) + '%</td><td style=" font-size: medium; background-color: #d7d7d7; font-weight: bold; text-align: center;">' + ((AesMat / sumOfTotalCheck) * 100).toFixed(2) + '%</td><td style=" font-size: medium; background-color: #d7d7d7; font-weight: bold; text-align: center;">' + ((AesProd / sumOfTotalCheck) * 100).toFixed(2) + '%</td><td style="font-size: medium; background-color: #a52a2a; font-weight: bold; text-align: center;color: white;">' + ((sumOfTotalAes / sumOfTotalCheck) * 100).toFixed(2) + '%</td></tr>')
                     );
                 }
                 
@@ -250,6 +264,13 @@
             else {
                 $('#PreviewData').html('');
             }
+        }
+
+        function displayBusyIndicator() {
+            $('.loading').show();
+        }
+        function StopBusyIndicator() {
+            $('.loading').hide();
         }
     </script>
 }

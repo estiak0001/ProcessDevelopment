@@ -11,6 +11,13 @@
     #select2-ddlModel-container {
         color: black;
     }
+    .ui-menu .ui-menu-item {
+        margin: 0;
+        zoom: 1;
+        width: 100%;
+        border-bottom: 1px solid black;
+        padding: 5px!important;
+    }
 </style>
 <div class="row">
     <div class="col-md-12">
@@ -220,41 +227,54 @@
 
             <div style="border: 1px solid #2a5440; padding:10px; margin-top: 15px; border-radius: 8px;">
                 <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="txtFaultType">Fault Type* :</label>
+                                <input style=" background-color: #f7f7f7;" type="text" id="txtFaultType" class="form-control form-control-sm" name="txtFaultType" />
+                                <span class="error">Please enter fault type</span>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="quantity">Fault Qty.* :</label>
+                                <input style=" background-color: #f7f7f7;" type="number" id="quantity" class="form-control form-control-sm" name="quantity" />
+                                <span class="error">Valid quantity required</span>
+                            </div>
+                            @*<div class="col-md-4">
+                                <input type="file" class="upload" id="f_UploadImage"><br />
+                            </div>*@
+
+                        </div>
+                        <div style="margin-top:5px" class="row">
+                            <div class="col-md-6">
+                                <label for="txtRootCause">Root Cause* :</label>
+                                <textarea style=" background-color: #f7f7f7;" id="txtRootCause" class="form-control form-control-sm"></textarea>
+                                <span class="error">Root Cause required</span>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="txtSolution">Solution* :</label>
+                                <textarea style=" background-color: #f7f7f7;" id="txtSolution" class="form-control form-control-sm"></textarea>
+                                <span class="error">Solution required</span>
+                            </div>
+                        </div>
+                        <div style="margin-top:5px" class="row">
+                            <div class="col-md-12">
+                                <label for="txtRemarks">Remarks</label>
+                                <textarea style=" background-color: #f7f7f7;" id="txtRemarks" class="form-control form-control-sm"></textarea>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <label for="txtFaultType">Fault Type* :</label>
-                        <input style=" background-color: #f7f7f7;" type="text" id="txtFaultType" class="form-control form-control-sm" name="txtFaultType" />
-                        <span class="error">Please enter fault type</span>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="quantity">Fault Qty.* :</label>
-                        <input style=" background-color: #f7f7f7;" type="number" id="quantity" class="form-control form-control-sm" name="quantity" />
-                        <span class="error">Valid quantity required</span>
-                    </div>
-                    <div class="col-md-2">
-                    </div>
+                    @*<div class="col-md-2">
+                        <a href="paris.jpg">
+                            <img id="myUploadedImg" alt="Image"/>
+                        </a>
+                    </div>*@
                 </div>
-                <div style="margin-top:5px" class="row">
-                    <div class="col-md-4">
-                        <label for="txtRootCause">Root Cause* :</label>
-                        <textarea style=" background-color: #f7f7f7;" id="txtRootCause" class="form-control form-control-sm"></textarea>
-                        <span class="error">Root Cause required</span>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="txtSolution">Solution* :</label>
-                        <textarea style=" background-color: #f7f7f7;" id="txtSolution" class="form-control form-control-sm"></textarea>
-                        <span class="error">Solution required</span>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="txtRemarks">Remarks</label>
-                        <textarea style=" background-color: #f7f7f7;" id="txtRemarks" class="form-control form-control-sm"></textarea>
-                    </div>
-                </div>
+                
                 <div style="text-align: center; ">
                     <input type="button" class="addbutton" id="add" value="Add" />
                 </div>
             </div>
+            
         </form>
         <!-- end form for validations -->
         <div style="margin-top:10px" id="faultsItem" class="tablecontainer">
@@ -583,6 +603,13 @@
                 }
             });
 
+
+            //var _URL = window.URL || window.webkitURL;
+            //$("#f_UploadImage").on('change', function () {
+
+            //    sendFile();
+            //});
+
             function DropDownChangeData() {
                 var data = {
                         Date: $('#txtDate').val().trim(),
@@ -657,7 +684,6 @@
                     });
             }
             //function for show added items in table
-
             function GeneratedItemsTable() {
                 if (faultsItem.length > 0) {
                     var $table = $('<table id="datatable-fixed-header" class="table table-sm table-striped table-bordered" style="width:100%"/>');
@@ -666,6 +692,8 @@
                     $.each(faultsItem, function (i, val) {
                         var $row = $('<tr/>');
                         $row.append($('<td/>').html(val.FaultType));
+                        //var $img = $('<img id="" alt="Photo" src="/FaultImages/bg_4.jpg" style="width:150px;height:100px" />');
+                        //$row.append($('<td/>').html($img));
                         $row.append($('<td/>').html(val.FaultQty));
                         $row.append($('<td/>').html(val.RootCause));
                         $row.append($('<td/>').html(val.Solution));
@@ -692,7 +720,27 @@
         function RedirectToPage() {
             window.location.href = '@Url.Action("Index", "AddFaultsInfo")';
         }
-
+        @*function sendFile() {
+            var fileUpload = $("#f_UploadImage").get(0);
+            var files = fileUpload.files;
+            var data = new FormData();
+            data.append(files[0].name, files[0]);
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("Upload_File", "AddFaultsInfo")",
+                contentType: false,
+                processData: false,
+                data: data,
+                async: false,
+                success: function (message) {
+                    alert(message);
+                    $("#myUploadedImg").attr("src", message);
+                },
+                error: function () {
+                    alert("Error!");
+                }
+            });
+        }*@
     </script>
 }
 
@@ -807,5 +855,9 @@
         -webkit-border-radius: 0px;
         -moz-border-radius: 0px;
         background-image: none;
+    }
+    .table-sm td, .table-sm th {
+        padding: 0.3rem;
+        vertical-align: middle;
     }
 </style>

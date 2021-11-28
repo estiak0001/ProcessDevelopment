@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using WebAppEs.Entity;
@@ -21,10 +24,12 @@ namespace WebAppEs.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IDataAccessService _dataAccessService;
         private readonly ILogger<AdminController> _logger;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
         public AddFaultsInfoController(
                 UserManager<ApplicationUser> userManager,
                 RoleManager<IdentityRole> roleManager,
+                IWebHostEnvironment hostEnvironment,
                 IDataAccessService dataAccessService,
                 ILogger<AdminController> logger)
         {
@@ -32,6 +37,7 @@ namespace WebAppEs.Controllers
             _roleManager = roleManager;
             _dataAccessService = dataAccessService;
             _logger = logger;
+            _hostEnvironment = hostEnvironment;
         }
 
         [Authorize("Authorization")]
@@ -274,8 +280,6 @@ namespace WebAppEs.Controllers
             return Json(details);
         }
 
-
-
         public JsonResult LoadFullSetData(DateTime Date, string LineNo, Guid PartsModelID, string LotNo)
         {
             MobileRNDFaultsEntryViewModel data = new MobileRNDFaultsEntryViewModel();
@@ -311,6 +315,35 @@ namespace WebAppEs.Controllers
             var result = _dataAccessService.FaultsTypeAutoComplete(prefix, type);
 
             return Json(result);
+        }
+        [HttpPost]
+        public string Upload_File()
+        {
+            string result = string.Empty;
+            try
+            {
+                long size = 0;
+                var file = Request.Form.Files;
+                var filename = ContentDispositionHeaderValue
+                                .Parse(file[0].ContentDisposition)
+                                .FileName
+                                .Trim('"');
+                string FilePath = _hostEnvironment.WebRootPath + $@"\FaultImages\{ filename}";
+
+                size += file[0].Length;
+
+                using (FileStream fs = System.IO.File.Create(FilePath))
+                {
+                    file[0].CopyTo(fs);
+                    fs.Flush();
+                }
+                result = "/FaultImages/"+ filename;
+            }
+            catch (Exception ex)
+            {
+                result = ex.Message;
+            }
+            return result;
         }
     }
 }
