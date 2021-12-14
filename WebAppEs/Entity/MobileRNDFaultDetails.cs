@@ -26,7 +26,6 @@ namespace WebAppEs.Entity
         [StringLength(50)]
         public DateTime? Date { get; set; }
 
-
         //[Required]
         //[StringLength(50)]
         //public string LineNo { get; set; }

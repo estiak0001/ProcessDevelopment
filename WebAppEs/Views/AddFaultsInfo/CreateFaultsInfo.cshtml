@@ -106,6 +106,7 @@
                                             <option value="8th">8th</option>
                                             <option value="9th">9th</option>
                                             <option value="10th">10th</option>
+                                            <option value="Closing">Closing</option>
                                         </select>
                                         <span class="error">Please select Lot!</span>
                                     </div>
@@ -332,8 +333,6 @@
                     val2 = $("#txtProductionFaultAes").val();
                 $("#textTotalAesthetic").text(Number(val1) + Number(val2));
             });
-
-
         });
         function selectAllText(senderId) {
             document.getElementById(senderId).focus();
