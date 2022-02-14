@@ -14,7 +14,7 @@ namespace WebAppEs.ViewModel.FaultsEntry
 
         [DataType(DataType.Date)]
         public DateTime? Date { get; set; }
-
+        public Guid SupplierId { get; set; }
 
         public string DateString { get; set; }
         [Required]
@@ -57,7 +57,7 @@ namespace WebAppEs.ViewModel.FaultsEntry
         public double? TotalAestheticFaultd { get; set; }
         public int? TotalCheckedQty { get; set; }
 
-        public IEnumerable<PartsModelViewModel> PartsModelViewModel { get; set; }
+        public List<PartsModelViewModel> PartsModelViewModel { get; set; }
         public IEnumerable<MobileRNDFaultsEntryViewModel> MobileRNDFaultsEntryViewModelList { get; set; }
         public string ButtonText { get; set; }
         public string Disabled { get; set; }

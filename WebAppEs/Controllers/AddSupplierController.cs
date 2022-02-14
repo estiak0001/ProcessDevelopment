@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -9,18 +8,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebAppEs.Models;
 using WebAppEs.Services;
-using WebAppEs.ViewModel.PartsModel;
+using WebAppEs.ViewModel.Supplier;
 
 namespace WebAppEs.Controllers
 {
-    public class ProductModelController : Controller
+    public class AddSupplierController : Controller
     {
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly RoleManager<IdentityRole> _roleManager;
 		private readonly IDataAccessService _dataAccessService;
 		private readonly ILogger<AdminController> _logger;
 
-		public ProductModelController(
+		public AddSupplierController(
 				UserManager<ApplicationUser> userManager,
 				RoleManager<IdentityRole> roleManager,
 				IDataAccessService dataAccessService,
@@ -33,38 +32,37 @@ namespace WebAppEs.Controllers
 		}
 
 		public IActionResult Index()
-        {
+		{
 			var employeeID = HttpContext.Session.GetString("EmployeeID");
 			if (employeeID == null)
 			{
 				return RedirectToAction("Logout", "Account");
 			}
 
-			var DataModel = _dataAccessService.GetAllPartsModelList();
+			var DataModel = _dataAccessService.GetAllSupplierList();
 			return View(DataModel);
-        }
+		}
 
-        public IActionResult CreateModel(Guid Id)
-        {
+		public IActionResult CreateSupplier(Guid Id)
+		{
 			var employeeID = HttpContext.Session.GetString("EmployeeID");
 			if (employeeID == null)
 			{
 				return RedirectToAction("Logout", "Account");
 			}
 
-			var ModelData = _dataAccessService.GetPartsModelList2(Id);
-			PartsModelViewModel2 viewModel = new PartsModelViewModel2();
+			var ModelData = _dataAccessService.GetSupplierList(Id);
+			MobileRNDSupplier_VM viewModel = new MobileRNDSupplier_VM();
 			if (ModelData != null)
-            {
+			{
 				viewModel = ModelData;
 			}
-			viewModel.supplier = _dataAccessService.GetAllSupplierList();
 			return View(viewModel);
-        }
+		}
 
 		[HttpPost]
 		//[Authorize("Roles")]
-		public async Task<IActionResult> CreateModel(PartsModelViewModel2 viewModel)
+		public async Task<IActionResult> CreateSupplier(MobileRNDSupplier_VM viewModel)
 		{
 			var employeeID = HttpContext.Session.GetString("EmployeeID");
 			if (employeeID == null)
@@ -74,18 +72,18 @@ namespace WebAppEs.Controllers
 
 			if (ModelState.IsValid)
 			{
-				var IsSubmit = await _dataAccessService.AddPartsModel(viewModel);
-				if(IsSubmit)
-                {
-					return RedirectToAction("Index", "ProductModel", null);
+				var IsSubmit = await _dataAccessService.AddSupplier(viewModel);
+				if (IsSubmit)
+				{
+					return RedirectToAction("Index", "AddSupplier", null);
 				}
-                else
-                {
-					ModelState.AddModelError("Name", "This Model Already Exist!");
+				else
+				{
+					ModelState.AddModelError("SupplierName", "This Supplier Already Exist!");
 				}
 			}
-			viewModel.supplier = _dataAccessService.GetAllSupplierList();
 			return View(viewModel);
 		}
 	}
 }
+

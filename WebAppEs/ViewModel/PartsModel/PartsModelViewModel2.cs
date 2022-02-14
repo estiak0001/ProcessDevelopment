@@ -7,7 +7,7 @@ using WebAppEs.ViewModel.Supplier;
 
 namespace WebAppEs.ViewModel.PartsModel
 {
-    public class PartsModelViewModel
+    public class PartsModelViewModel2
     {
         public Guid ID { get; set; }
 
@@ -19,5 +19,7 @@ namespace WebAppEs.ViewModel.PartsModel
         public string Supplier { get; set; }
 
         public string IsUpdate { get; set; }
+
+        public List<MobileRNDSupplier_VM> supplier { get; set; }
     }
 }

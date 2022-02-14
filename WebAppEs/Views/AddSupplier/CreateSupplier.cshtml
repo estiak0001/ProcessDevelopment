@@ -1,0 +1,38 @@
+﻿@model WebAppEs.ViewModel.Supplier.MobileRNDSupplier_VM
+@{
+    ViewData["Title"] = "Create Supplier";
+}
+
+<h1> Add Supplier </h1>
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="CreateSupplier">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="SupplierName" class="control-label"></label>
+                        <input asp-for="SupplierName" class="form-control" />
+                        <span asp-validation-for="SupplierName" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @if (@Model.IsUpdate == "Update")
+                {
+                    <input type="submit" value="Update" class="btn btn-primary" />
+                }
+                else
+                {
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                }
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

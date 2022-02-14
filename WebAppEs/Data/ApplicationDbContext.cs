@@ -18,6 +18,7 @@ namespace WebAppEs.Data
 		public DbSet<MobileRNDFaultsEntry> MobileRNDFaultsEntry { get; set; }
 		public DbSet<MobileRNDPartsModels> MobileRNDPartsModels { get; set; }
 		public DbSet<MobileRNDFaultDetails> MobileRNDFaultDetails { get; set; }
+		public DbSet<MobileRNDSupplier> MobileRNDSupplier { get; set; }
 		
 		protected override void OnModelCreating(ModelBuilder builder)
 		{

@@ -7,16 +7,14 @@ using System.Threading.Tasks;
 
 namespace WebAppEs.Entity
 {
-    [Table(name: "MobileRNDPartsModels")]
-    public class MobileRNDPartsModels
+    [Table(name: "MobileRNDSupplier")]
+    public class MobileRNDSupplier
     {
         [Key]
         public Guid Id { get; set; }
 
         [Required]
         [StringLength(150)]
-        public string ModelName { get; set; }
-
-        public Guid SupplierId { get; set; }
+        public string SupplierName { get; set; }
     }
 }

@@ -13,6 +13,7 @@ using WebAppEs.ViewModel.FaultsEntry;
 using WebAppEs.ViewModel.Home;
 using WebAppEs.ViewModel.Register;
 using WebAppEs.ViewModel.Report;
+using WebAppEs.ViewModel.Supplier;
 
 namespace WebAppEs.Services
 {
@@ -150,7 +151,7 @@ namespace WebAppEs.Services
 			return ((ClaimsIdentity)user.Identity).FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		}
 
-        public async Task<bool> AddPartsModel(PartsModelViewModel viewModel)
+        public async Task<bool> AddPartsModel(PartsModelViewModel2 viewModel)
         {
 			var result = 0;
 			var UpdateDataSet = await _context.MobileRNDPartsModels.Where(x => x.Id == viewModel.ID).FirstOrDefaultAsync();
@@ -167,15 +168,16 @@ namespace WebAppEs.Services
 					_context.MobileRNDPartsModels.Add(new MobileRNDPartsModels()
 					{
 						ModelName = viewModel.Name,
-						Supplier = viewModel.Supplier
+						SupplierId = viewModel.SupplierId
 					});
+
 					result = await _context.SaveChangesAsync();
 				}
 			}
 			else
 			{
 				UpdateDataSet.ModelName = viewModel.Name;
-				UpdateDataSet.Supplier = viewModel.Supplier;
+				UpdateDataSet.SupplierId = viewModel.SupplierId;
 
 				_context.MobileRNDPartsModels.Update(UpdateDataSet);
 				result = await _context.SaveChangesAsync();
@@ -187,12 +189,16 @@ namespace WebAppEs.Services
         public  List<PartsModelViewModel> GetAllPartsModelList()
         {
 			var items =  (from partModel in _context.MobileRNDPartsModels
-							   
-							   select new PartsModelViewModel()
+						  join rm in _context.MobileRNDSupplier
+						   on new { X1 = partModel.SupplierId } equals new { X1 = rm.Id }
+						   into rmp
+						  from rm in rmp.DefaultIfEmpty()
+						  select new PartsModelViewModel()
 							   {
 								   ID = partModel.Id,
 								   Name = partModel.ModelName,
-								   Supplier = partModel.Supplier
+								   SupplierId = partModel.SupplierId,
+								   Supplier = rm.SupplierName
 							   }).ToList();
 			return items;
 		}
@@ -304,7 +310,7 @@ namespace WebAppEs.Services
 			return items;
 		}
 
-		public List<MobileRNDFaultsEntryViewModel> SortableAllFaultsList(DateTime? startDate, DateTime? toDate, string lineNo, Guid ModelID, string lotNo, string EmployeeID)
+		public List<MobileRNDFaultsEntryViewModel> SortableAllFaultsList(DateTime? startDate, DateTime? toDate, string lineNo, Guid ModelID, string lotNo, string EmployeeID, Guid SupplierId)
 		{
 			if (lineNo == null)
 			{
@@ -322,6 +328,10 @@ namespace WebAppEs.Services
 			{
 				EmployeeID = "";
 			}
+			if(SupplierId == null)
+            {
+				SupplierId = Guid.Empty;
+            }
 
 			var items = (from faults in _context.MobileRNDFaultsEntry
 						  join model in _context.MobileRNDPartsModels
@@ -337,9 +347,11 @@ namespace WebAppEs.Services
 							  Line = "Line " + faults.LineNo,
 							  ModelName = rm.ModelName,
 							  ModelNameWithLot = rm.ModelName + "/" + faults.LotNo + " Lot",
+							  SupplierId = rm.SupplierId,
 							  PartsModelID = faults.PartsModelID,
 							  LotNo = faults.LotNo,
 							  TotalCheckedQty = faults.TotaCheckedQty,
+							  
 
 							  FuncMaterialFault = faults.FuncMaterialFault,
 							  FuncProductionFault = faults.FuncProductionFault,
@@ -365,7 +377,8 @@ namespace WebAppEs.Services
 							  LineNo = faults.LineNo,
 							  TotalFuncAes = (faults.TotalFunctionalFault + faults.TotalAestheticFault),
 							  StatusIsToday = faults.Date == DateTime.Today ? true : false
-						  }).Distinct().OrderBy(d => d.Date).ThenByDescending(x => x.TotalFuncAes).Where(s => ((startDate == null && toDate == null) || (s.Date >= startDate && s.Date <= toDate)) && (lineNo == "" || s.LineNo == lineNo) && (ModelID == Guid.Empty || s.PartsModelID == ModelID) && (lotNo == "" || s.LotNo == lotNo) && (EmployeeID == "" || s.EmployeeID == EmployeeID)).ToList();
+						  }).Distinct().OrderBy(d => d.Date).ThenByDescending(x => x.TotalFuncAes).Where(s => ((startDate == null && toDate == null) || (s.Date >= startDate && s.Date <= toDate)) && (lineNo == "" || s.LineNo == lineNo) && (ModelID == Guid.Empty || s.PartsModelID == ModelID) && (lotNo == "" || s.LotNo == lotNo) && (EmployeeID == "" || s.EmployeeID == EmployeeID) && (SupplierId == Guid.Empty || s.SupplierId == SupplierId)).ToList();
+
 			return items;
 		}
 
@@ -524,6 +537,7 @@ namespace WebAppEs.Services
 						 {
 							 ID = partModel.Id,
 							 Name = partModel.ModelName,
+							 SupplierId = partModel.SupplierId,
 							 IsUpdate = "Update"
 						 }).FirstOrDefault();
 
@@ -745,6 +759,87 @@ namespace WebAppEs.Services
             {
 				return result;
 			}
+		}
+
+        public MobileRNDSupplier_VM GetSupplierList(Guid Id)
+        {
+			var items = (from sup in _context.MobileRNDSupplier.Where(x => x.Id == Id)
+
+						 select new MobileRNDSupplier_VM()
+						 {
+							 Id = sup.Id,
+							 SupplierName = sup.SupplierName,
+							 IsUpdate = "Update"
+						 }).FirstOrDefault();
+
+			return items;
+		}
+
+        public async Task<bool> AddSupplier(MobileRNDSupplier_VM viewModel)
+        {
+			var result = 0;
+			var UpdateDataSet = await _context.MobileRNDSupplier.Where(x => x.Id == viewModel.Id).FirstOrDefaultAsync();
+			var IsExist = await _context.MobileRNDSupplier.Where(x => x.SupplierName == viewModel.SupplierName).FirstOrDefaultAsync();
+			if (UpdateDataSet == null)
+			{
+				if(IsExist == null)
+                {
+					_context.MobileRNDSupplier.Add(new MobileRNDSupplier()
+					{
+						SupplierName = viewModel.SupplierName,
+					});
+					result = await _context.SaveChangesAsync();
+					return result > 0;
+				}
+
+                else
+                {
+					return false;
+                }
+				
+			}
+			else
+			{
+				if (IsExist == null)
+				{
+					UpdateDataSet.SupplierName = viewModel.SupplierName;
+
+					_context.MobileRNDSupplier.Update(UpdateDataSet);
+					result = await _context.SaveChangesAsync();
+					return result > 0;
+				}
+                else
+                {
+					return false;
+                }
+			}
+		}
+
+        public List<MobileRNDSupplier_VM> GetAllSupplierList()
+        {
+			var items = (from sup in _context.MobileRNDSupplier
+						 
+						 select new MobileRNDSupplier_VM()
+						 {
+							 Id = sup.Id,
+							 SupplierName = sup.SupplierName,
+						 }).ToList();
+			return items;
+		}
+
+        public PartsModelViewModel2 GetPartsModelList2(Guid Id)
+        {
+			var items = (from partModel in _context.MobileRNDPartsModels.Where(x => x.Id == Id)
+
+						 select new PartsModelViewModel2()
+						 {
+							 ID = partModel.Id,
+							 Name = partModel.ModelName,
+							 SupplierId = partModel.SupplierId,
+							 IsUpdate = "Update"
+						 }).FirstOrDefault();
+
+			return items;
 		}
     }
 }

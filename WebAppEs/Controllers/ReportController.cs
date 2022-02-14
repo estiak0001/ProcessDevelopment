@@ -47,18 +47,18 @@ namespace WebAppEs.Controllers
             //var data = _dataAccessService.GetAllFaultsList();
             viewmodel.PartsModelViewModel = _dataAccessService.GetAllPartsModelList();
             viewmodel.EmployeeListVM = _dataAccessService.GetAllEmployeeList();
+            viewmodel.SupplierList = _dataAccessService.GetAllSupplierList();
             //viewmodel.WithQty = "qt";
             //viewmodel.WithPercentage = "per";
             return View(viewmodel);
         }
-        public JsonResult LoadPreView(DateTime? FromDate, DateTime? ToDate, string LineNo, Guid PartsModelID, string LotNo, string EmployeeID)
+
+        public JsonResult LoadPreView(DateTime? FromDate, DateTime? ToDate, string LineNo, Guid PartsModelID, string LotNo, string EmployeeID, Guid SupplierID)
         {
             MobileRNDFaultsEntryViewModel data = new MobileRNDFaultsEntryViewModel();
-            var result = _dataAccessService.SortableAllFaultsList(FromDate, ToDate, LineNo, PartsModelID, LotNo, EmployeeID);
-
+            var result = _dataAccessService.SortableAllFaultsList(FromDate, ToDate, LineNo, PartsModelID, LotNo, EmployeeID, SupplierID);
             return Json(result);
         }
-
 
         [HttpPost]
         public IActionResult Print([FromForm] ReportViewModel viewmodel)
@@ -83,7 +83,7 @@ namespace WebAppEs.Controllers
                 }
 
                 //workbook.ColumnWidth = 19;
-                var result = _dataAccessService.SortableAllFaultsList(viewmodel.FromDate, viewmodel.ToDate, viewmodel.LineNo, viewmodel.PartsModelID, viewmodel.LotNo, viewmodel.EmployeeID);
+                var result = _dataAccessService.SortableAllFaultsList(viewmodel.FromDate, viewmodel.ToDate, viewmodel.LineNo, viewmodel.PartsModelID, viewmodel.LotNo, viewmodel.EmployeeID, viewmodel.SupplierID);
 
                 var worksheet = workbook.Worksheets.Add(fileName);
 
@@ -382,7 +382,6 @@ namespace WebAppEs.Controllers
                         fileName2);
                 }
             }
-
         }
 
         public IActionResult PrintDetails(ReportViewModel viewmodel)

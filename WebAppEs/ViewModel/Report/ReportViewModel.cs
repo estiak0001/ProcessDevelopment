@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebAppEs.ViewModel.PartsModel;
 using WebAppEs.ViewModel.Register;
+using WebAppEs.ViewModel.Supplier;
 
 namespace WebAppEs.ViewModel.Report
 {
@@ -29,6 +30,8 @@ namespace WebAppEs.ViewModel.Report
 
         public IEnumerable<PartsModelViewModel> PartsModelViewModel { get; set; }
         public IEnumerable<EmployeeListVM> EmployeeListVM { get; set; }
+        public Guid SupplierID { get; set; }
+        public IEnumerable<MobileRNDSupplier_VM> SupplierList { get; set; }
 
 
         public bool WithQty { get; set; }
